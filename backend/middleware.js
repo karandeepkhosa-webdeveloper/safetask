@@ -1,5 +1,7 @@
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken" 
+import dotenv from "dotenv"
 
+dotenv.config()
 const Authmiddleware = (req,res,next) =>{
 
     let token = req.headers.authorization.split(" ")[1]
@@ -7,7 +9,7 @@ const Authmiddleware = (req,res,next) =>{
     if(!token){return res.status(401).send("NO token")}
     
     try{
-        let decoded = jwt.verify(token, "secretkey")
+        let decoded = jwt.verify(token, process.env.JWT_SECRET)
         console.log("decoded from middleware is ", decoded)
         req.user = decoded
         next();

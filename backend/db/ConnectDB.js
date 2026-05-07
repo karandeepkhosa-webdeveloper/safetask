@@ -1,5 +1,7 @@
-import mongoose from "mongoose"; 
+import mongoose from "mongoose";  
+import dotenv from "dotenv"
 
+dotenv.config()
 const ConnectDB = async () => {
 
     try {
@@ -9,7 +11,7 @@ const ConnectDB = async () => {
         }
 
 
-        await mongoose.connect("mongodb+srv://karandeepkhosa_mogodb_atlas:karan%40123@safetask-cluster.mj0w2sl.mongodb.net/MyTodoListData?retryWrites=true&w=majority")
+        await mongoose.connect(process.env.MONGO_URI)
         console.log("Database Connected")
     } catch (err) {
         console.log("Database Connection Error: ", err)

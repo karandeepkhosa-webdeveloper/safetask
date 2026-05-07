@@ -2,7 +2,7 @@ import express from "express"
 import ConnectDB from "./db/ConnectDB.js"
 import Todo from "./models/todos.js"
 import cors from "cors"
-
+import dotenv from "dotenv"
 import Signupform from "./models/signupmodel.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
@@ -11,8 +11,8 @@ import authmiddleware from "./middleware.js"
 
 
 const app = express()
-const port = process.env.PORT || 3000
-
+dotenv.config()
+const port = process.env.PORT
 
 
 app.use(express.json())
@@ -117,7 +117,7 @@ app.post("/login", async (req, res) => {
             let verify1 = await bcrypt.compare(data.password, findCredbyemail.password)
             if (verify1) {
                 console.log("i am in login by email", verify1)
-                const token = jwt.sign({ id: findCredbyemail._id, username: findCredbyemail.username }, "secretkey")
+                const token = jwt.sign({ id: findCredbyemail._id, username: findCredbyemail.username }, process.env.JWT_SECRET)
                 res.send({ reason: "login success", token, name: findCredbyemail.username })
             }
             else {
@@ -129,7 +129,7 @@ app.post("/login", async (req, res) => {
             if (findCredbyusername) {
                 let verify2 = await bcrypt.compare(data.password, findCredbyusername.password)
                 if (verify2) {
-                    const token = jwt.sign({ id: findCredbyusername._id, username: findCredbyusername.username }, "secretkey")
+                    const token = jwt.sign({ id: findCredbyusername._id, username: findCredbyusername.username }, process.env.JWT_SECRET)
                     res.send({ reason: "login success", token, name: findCredbyusername.username })
                 }
                 else {

@@ -23,7 +23,7 @@ const Login = () => {
     try {
 
 
-      let res = await fetch("http://localhost:3000/login", {
+      let res = await fetch("https://safetask-backend.onrender.com/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

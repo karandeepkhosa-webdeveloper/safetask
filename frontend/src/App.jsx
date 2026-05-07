@@ -37,7 +37,7 @@ function App() {
   const conBackend = async () => {
 
     try {
-      const res = await fetch("http://localhost:3000/")
+      const res = await fetch("https://safetask-backend.onrender.com/")
       if (res.ok) {
         const data = await res.json()
         console.log(data)
@@ -54,7 +54,7 @@ function App() {
 
   const getdata = async () => {
     try {
-      let res = await fetch("http://localhost:3000/sendData",{
+      let res = await fetch("https://safetask-backend.onrender.com/sendData",{
         method:"GET",
         headers:{
           "authorization": "bareer "+localStorage.getItem("token")
@@ -71,7 +71,7 @@ function App() {
 
   const updateData = async (params) => {
     try {
-      let res = await fetch(`http://localhost:3000/update/${params.id}`, {
+      let res = await fetch(`https://safetask-backend.onrender.com/update/${params.id}`, {
         method: "PUT",  
         headers: {
           "Content-Type": "application/json",
@@ -90,7 +90,7 @@ function App() {
   const deleteData = async ( dataToDelete) => {
     
     try {
-      let res = await fetch(`http://localhost:3000/delete/${dataToDelete[0].id}`, {
+      let res = await fetch(`https://safetask-backend.onrender.com/delete/${dataToDelete[0].id}`, {
         method: "DELETE",
         headers:{
           "authorization":"bareer "+localStorage.getItem("token")

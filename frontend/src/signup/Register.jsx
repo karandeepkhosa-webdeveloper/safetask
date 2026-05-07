@@ -24,7 +24,7 @@ const Signup = () => {
     try{
 
       
-      let res = await fetch("http://localhost:3000/signup", {
+      let res = await fetch("https://safetask-backend.onrender.com/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -18,38 +18,51 @@ const Signup = () => {
   const [accountCreated, setaccountCreated] = useState(false)
   const obj = { name: "karan", isloggedin: true }
 
-  
+
   const onSubmit = async (params) => {
-    let res = await fetch("http://localhost:3000/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(params)
-    })
-    let data = await res.json()
-    console.log(data)
-    if(data.reason === "email"){
-      setError("email",{
-        type:"manual",
-        message:data.message
+
+    try{
+
+      
+      let res = await fetch("http://localhost:3000/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(params)
+      })
+      let data = await res.json()
+      console.log(data)
+    
+    
+      if (data.reason === "email") {
+        setError("email", {
+        type: "manual",
+        message: data.message
       })
     }
-    if(data.reason==="username"){
-      setError("username",{
-        type:"manual",
-        message:data.message
+    if (data.reason === "username") {
+      setError("username", {
+        type: "manual",
+        message: data.message
       })
     }
-    if(data.reason==="success")
+    if (data.reason === "success")
+    {
       setaccountCreated(true)
+    }
+
+
+  }catch(error){
+    console.log("error happened in register.jsx", error)
   }
-
+  }
+  
   // const first = createContext(obj)
-
-
-
-
+  
+  
+  
+  
   return (
     <div className='text-black'>
       <div className="actualDiv container mx-auto w-full xl:w-[40vw] bg-white min-h-screen flex flex-col items-center py-16">

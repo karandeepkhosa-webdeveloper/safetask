@@ -19,34 +19,41 @@ const Login = () => {
 
 
   const onSubmit = async (params) => {
-    let res = await fetch("http://localhost:3000/login",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        
-      },
-      body:JSON.stringify(params)
-    })
-    let data = await res.json()
-    console.log(data)
-    if (data.reason === "not found"){
-      setError("useremail",{
-        type:"manual",
-        message:data.message
+
+    try {
+
+
+      let res = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+
+        },
+        body: JSON.stringify(params)
       })
+      let data = await res.json()
+      console.log(data)
+      if (data.reason === "not found") {
+        setError("useremail", {
+          type: "manual",
+          message: data.message
+        })
+      }
+      if (data.reason === "invalid password") {
+        setError("password", {
+          type: "manual",
+          message: data.message
+        })
+      }
+      if (data.reason === "login success") {
+        localStorage.setItem("token", data.token)
+        localStorage.setItem("name", data.name)
+        navigate("/todos");
+      }
+
+    } catch (error) {
+      console.log("error happened in login.jsx", error)
     }
-    if (data.reason === "invalid password"){
-      setError("password",{
-        type:"manual",
-        message:data.message
-      })
-    }
-    if(data.reason==="login success"){
-      localStorage.setItem("token", data.token)
-      localStorage.setItem("name", data.name)
-      navigate("/todos");
-    }
-   
   }
 
   const [showpass, setshowpass] = useState(false)
@@ -75,7 +82,7 @@ const Login = () => {
             <button type='submit' className='bg-blue-500 py-2 my-2 font-bold hover:bg-blue-600 transition-all duration-300 rounded-xl cursor-pointer'>Login</button>
           </div>
         </form>
-        <Link to={"/signup"} className='font-bold flex justify-center cursor-pointer my-3 hover:underline'> <p className='text-black '> Don't Have Account?</p> <p className='text-blue-700 '>Sign Up</p></Link> 
+        <Link to={"/signup"} className='font-bold flex justify-center cursor-pointer my-3 hover:underline'> <p className='text-black '> Don't Have Account?</p> <p className='text-blue-700 '>Sign Up</p></Link>
 
       </div>
     </div>

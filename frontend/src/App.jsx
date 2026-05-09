@@ -303,7 +303,7 @@ function App() {
     return ( <>
       <Navbar />
       <div className='container xl:w-[50%] lg:w-[65%] md:w-[80%] sm:w-[95%] min-h-screen mx-auto bg-slate-300 text-black text-center '>
-        <h1 className='text-3xl pt-20 pb-5 font-bold'>Todo List</h1>  
+        <h1 className='text-3xl pt-20 pb-5 font-bold'>SafeTask</h1>  
 
         <div className='border-none outline outline-slate-700 mx-auto w-[90%] sm:w-[75%] rounded-2xl overflow-hidden flex justify-center items-center'>
 

@@ -28,7 +28,7 @@ const Navbar = () => {
 
   return (
     <div className='flex justify-between items-center px-4 py-2 bg-black text-white'>
-      <div className='font-bold'>TodoApp</div>
+      <div className='font-bold'>SafeTask</div>
 
       
 

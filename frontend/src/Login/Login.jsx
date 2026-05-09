@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 const Login = () => {
 
   const navigate = useNavigate()
+  const [loading, setloading] = useState(false)
 
   const {
     register,
@@ -21,8 +22,7 @@ const Login = () => {
   const onSubmit = async (params) => {
 
     try {
-
-
+      setloading(true)
       let res = await fetch("https://safetask-backend.onrender.com/login", {
         method: "POST",
         headers: {
@@ -33,6 +33,7 @@ const Login = () => {
       })
       let data = await res.json()
       console.log(data)
+      
       if (data.reason === "not found") {
         setError("useremail", {
           type: "manual",
@@ -53,6 +54,9 @@ const Login = () => {
 
     } catch (error) {
       console.log("error happened in login.jsx", error)
+    }
+    finally{
+      setloading(false)
     }
   }
 
@@ -78,8 +82,8 @@ const Login = () => {
                 <button type='button' onClick={() => { showpass ? setshowpass(false) : setshowpass(true) }} className='absolute text-sm font-bold right-4 border px-2 rounded-xl top-1/4 bg-gray-200'>{showpass ? "Hide" : "Show"}</button>
               </div>
               {errors.password && <div className='text-red-500 text-sm font-bold'>{errors.password.message} </div>}
-            </div>
-            <button type='submit' className='bg-blue-500 py-2 my-2 font-bold hover:bg-blue-600 transition-all duration-300 rounded-xl cursor-pointer'>Login</button>
+            </div>  
+            <button type='submit' disabled={loading} className='bg-blue-500 py-2 my-2 font-bold hover:bg-blue-600 transition-all duration-300 rounded-xl cursor-pointer'>{loading ? "Signing In" : "Sign In"}</button>
           </div>
         </form>
         <Link to={"/signup"} className='font-bold flex justify-center cursor-pointer my-3 hover:underline'> <p className='text-black '> Don't Have Account?</p> <p className='text-blue-700 '>Sign Up</p></Link>

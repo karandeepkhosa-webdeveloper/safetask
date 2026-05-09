@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 
 
@@ -14,16 +15,18 @@ const Signup = () => {
     formState: { errors },
   } = useForm()
 
+  const navigate = useNavigate()
   const [showpass, setshowpass] = useState(false)
   const [accountCreated, setaccountCreated] = useState(false)
-  const obj = { name: "karan", isloggedin: true }
+  
+  const [loading, setloading] = useState(false)
 
 
   const onSubmit = async (params) => {
 
-    try{
+    try {
 
-      
+      setloading(true)
       let res = await fetch("https://safetask-backend.onrender.com/signup", {
         method: "POST",
         headers: {
@@ -33,36 +36,54 @@ const Signup = () => {
       })
       let data = await res.json()
       console.log(data)
-    
-    
+
+
       if (data.reason === "email") {
         setError("email", {
-        type: "manual",
-        message: data.message
-      })
-    }
-    if (data.reason === "username") {
-      setError("username", {
-        type: "manual",
-        message: data.message
-      })
-    }
-    if (data.reason === "success")
-    {
-      setaccountCreated(true)
-    }
+          type: "manual",
+          message: data.message
+        })
+      }
+      if (data.reason === "username") {
+        setError("username", {
+          type: "manual",
+          message: data.message
+        })
+      }
+      if (data.reason === "success") {
+
+        let res = await fetch("https://safetask-backend.onrender.com/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+
+          },
+          body: JSON.stringify({ useremail: params.username, password: params.password })
+        })
+        let logindata = await res.json()
+        console.log("logging in from signup: ", logindata)
+        if (logindata.reason === "login success") {
+          localStorage.setItem("token", logindata.token)
+          localStorage.setItem("name", logindata.name)
+          navigate("/todos");
+        }
+
+      }
 
 
-  }catch(error){
-    console.log("error happened in register.jsx", error)
+    } catch (error) {
+      console.log("error happened in register.jsx", error)
+    }
+    finally{
+      setloading(false)
+    }
   }
-  }
-  
+
   // const first = createContext(obj)
-  
-  
-  
-  
+
+
+
+
   return (
     <div className='text-black'>
       <div className="actualDiv container mx-auto w-full xl:w-[40vw] bg-white min-h-screen flex flex-col items-center py-16">
@@ -88,7 +109,7 @@ const Signup = () => {
               </div>
               {errors.password && <div className='text-red-500 text-sm font-bold'>{errors.password.message}</div>}
             </div>
-            <button type='submit' className='bg-blue-500 py-2 my-2 font-bold hover:bg-blue-600 transition-all duration-300 rounded-xl cursor-pointer'>SignUp</button>
+            <button type='submit' disabled={loading} className='bg-blue-500 py-2 my-2 font-bold hover:bg-blue-600 transition-all duration-300 rounded-xl cursor-pointer'>{loading ? "Signing Up..." : "SignUp"}</button>
           </div>
         </form>
         {accountCreated && <div className='text-green-500 font-bold text-sm'>Account created Succesfully, <Link to={"/login"} className='text-blue-700 hover:text-blue-500 underline'>Now Login please</Link></div>}
